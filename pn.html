@@ -1,16 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pn</title>
-</head>
+namespace App\Http\Controllers\admin;
 
-<body>
-    <h1>hello WORLD</h1>sss sss
-    <h2>Github done</h2>
-</body>
+use App\Http\Controllers\Controller;
+use App\Models\tbl_lead;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
-</html>
+class TodolistController extends Controller
+{
+    public function index()
+    {
+        $data = [];
+        $admin = false;
+        $todos = [];
+        if (Auth::user()->user_type == 1) {
+            $usersList = User::where('status', 0)->where('user_type', 2)->get();
+            // getting tasks for that particular user
+            foreach ($usersList as $key => $user) {
+                $userData = [];
+                $tasks = tbl_lead::where('tbl_user_id', $user->id)->get();
+                $userData[] = array("user_data" => $user, "tasks" => $tasks);
+                $data[] = $userData;
+            }
+            $admin = true;
+        } else {
+            $todos = tbl_lead::where('tbl_user_id', Auth::id())->get();
+        }
+        return view('/admin/todulist/index', compact('data', 'admin', 'todos'));
+    }
+}
