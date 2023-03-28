@@ -31,4 +31,14 @@ class TodolistController extends Controller
         }
         return view('/admin/todulist/index', compact('data', 'admin', 'todos'));
     }
+    
+//     how to jion one table two jion select use in laravel
+//         return $data =  DB::table('tbl_leads')
+//             ->join('tbl_customers', 'tbl_customers.customer_id', 'tbl_leads.tbl_cust_id')
+//             ->join('tbl_shift_tasks', 'tbl_shift_tasks.task_lead_id', 'tbl_leads.lead_id')
+//             ->join('users', 'users.id', 'tbl_shift_tasks.shift_user_id')
+//             ->join('users as get_user', 'get_user.id', 'tbl_shift_tasks.task_get_user_id')
+//             ->select('users.*', 'get_user.name as get_user_name', 'get_user.id as get_user_id', "tbl_customers.*")
+//             ->latest('tbl_leads.created_at')
+//             ->get();
 }
